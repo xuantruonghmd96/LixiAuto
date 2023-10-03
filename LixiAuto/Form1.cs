@@ -6,7 +6,7 @@ namespace LixiAuto
     public partial class Form1 : Form
     {
         int _lixiClickAddX = 130, _lixiClickAddY = 60, _lixiClickAddNext = -100, _count = 0;
-        int _padLeft = 1500, _padTop = 100;
+        int _padLeft = 1300, _padTop = 100;
         int hue = 7, saturation = 30, brightness = 40;
         public Form1()
         {
@@ -17,6 +17,57 @@ namespace LixiAuto
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
+        {
+            LblCount.Text = _count.ToString();
+            btnStart.Enabled = false;
+            hue = (int)numHue.Value; saturation = (int)numSaturation.Value; brightness = (int)numBrightness.Value;
+            BitmapDetectTool.hue = hue;
+            BitmapDetectTool.saturation = saturation;
+            BitmapDetectTool.brightness = brightness;
+
+            using (var lixiImage = new Bitmap(tbxScreenSavePath.Text + "\\resources\\" + "lixi1.png"))
+            {
+                do
+                {
+                    using (var captureBitmap = ScreenCaptureTool.CaptureMyScreen(_padLeft, _padTop))
+                    {
+                        string savePath = tbxScreenSavePath.Text + "\\" + DateTime.Now.ToString("yyyyMMdd");
+                        Directory.CreateDirectory(savePath);
+                        captureBitmap.Save(savePath + "\\_screen" + DateTime.Now.ToString("yyyyMMdd_HHmmssff") + ".jpg", ImageFormat.Jpeg);
+                        var lixiPoint = BitmapDetectTool.Find(captureBitmap, lixiImage);
+                        if (lixiPoint != null)
+                        {
+                            await Task.Delay(400);
+                            _count++;
+                            LblCount.Text = _count.ToString();
+                                int clickX = lixiPoint.Value.X + _padLeft + _lixiClickAddX;
+                                int clickY = lixiPoint.Value.Y + _padTop + _lixiClickAddY;
+                                ClickOnPointTool.ClickOnPoint(this.Handle, new Point(clickX, clickY));
+                                await Task.Delay(400);
+                                ClickOnPointTool.ClickOnPoint(this.Handle, new Point(clickX, clickY));
+
+                            await Task.Delay(500);
+                            Random rand = new Random();
+                            using (var screenSaveBitmap = ScreenCaptureTool.CaptureMyScreen(Screen.PrimaryScreen.Bounds.Width / 2 + rand.Next(200), 100 + rand.Next(200), rand.Next(200), rand.Next(400)))
+                            {
+                                //Saving the Image File (I am here Saving it in My E drive).
+                                savePath = tbxScreenSavePath.Text + "\\" + DateTime.Now.ToString("yyyyMMdd");
+                                Directory.CreateDirectory(savePath);
+                                screenSaveBitmap.Save(savePath + "\\" + DateTime.Now.ToString("yyyyMMdd_HHmmssff") + ".jpg", ImageFormat.Jpeg);
+
+                                await ClickLixiOk();
+                            }
+                            await ClickF5();
+                            await Task.Delay(200);
+                            await ClickKhungChat();
+                        }
+                    }
+                    await Task.Delay(200);
+                } while (true);
+            }
+        }
+
+        private async void btnStart_Click_1(object sender, EventArgs e)
         {
             LblCount.Text = _count.ToString();
             btnStart.Enabled = false;
@@ -232,8 +283,9 @@ namespace LixiAuto
 
         private static bool SamePixcel(Color color1, Color color2)
         {
+            var hueCount = Math.Abs(color1.GetHue() - color2.GetHue());
             return (
-                    Math.Abs(color1.GetHue() - color2.GetHue()) <= hue
+                    Math.Min(hueCount, 360-hueCount) <= hue
                     && Math.Abs(color1.GetSaturation() - color2.GetSaturation())*100 <= saturation
                     && Math.Abs(color1.GetBrightness() - color2.GetBrightness())*100 <= brightness
                 );
