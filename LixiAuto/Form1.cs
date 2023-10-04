@@ -16,7 +16,7 @@ namespace LixiAuto
             numBrightness.Value = brightness;
         }
 
-        private async void btnStart_Click(object sender, EventArgs e)
+        private async void btnStart_Click_2(object sender, EventArgs e)
         {
             LblCount.Text = _count.ToString();
             btnStart.Enabled = false;
@@ -25,7 +25,7 @@ namespace LixiAuto
             BitmapDetectTool.saturation = saturation;
             BitmapDetectTool.brightness = brightness;
 
-            using (var lixiImage = new Bitmap(tbxScreenSavePath.Text + "\\resources\\" + "lixi1.png"))
+            using (var lixiImage = new Bitmap(tbxScreenSavePath.Text + "\\resources\\" + "lixi2.png"))
             {
                 do
                 {
@@ -67,7 +67,7 @@ namespace LixiAuto
             }
         }
 
-        private async void btnStart_Click_1(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
             LblCount.Text = _count.ToString();
             btnStart.Enabled = false;
@@ -76,7 +76,7 @@ namespace LixiAuto
             BitmapDetectTool.saturation = saturation;
             BitmapDetectTool.brightness = brightness;
 
-            using (var lixiImage = new Bitmap(tbxScreenSavePath.Text + "\\resources\\" + "lixi.png"))
+            using (var lixiImage = new Bitmap(tbxScreenSavePath.Text + "\\resources\\" + "lixi1.png"))
             {
                 do
                 {
