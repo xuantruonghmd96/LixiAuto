@@ -31,9 +31,6 @@ namespace LixiAuto
                 {
                     using (var captureBitmap = ScreenCaptureTool.CaptureMyScreen(_padLeft, _padTop))
                     {
-                        string savePath = tbxScreenSavePath.Text + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                        Directory.CreateDirectory(savePath);
-                        captureBitmap.Save(savePath + "\\_screen" + DateTime.Now.ToString("yyyyMMdd_HHmmssff") + ".jpg", ImageFormat.Jpeg);
                         var lixiPoint = BitmapDetectTool.Find(captureBitmap, lixiImage);
                         if (lixiPoint != null)
                         {
@@ -51,7 +48,7 @@ namespace LixiAuto
                             using (var screenSaveBitmap = ScreenCaptureTool.CaptureMyScreen(Screen.PrimaryScreen.Bounds.Width / 2 + rand.Next(200), 100 + rand.Next(200), rand.Next(200), rand.Next(400)))
                             {
                                 //Saving the Image File (I am here Saving it in My E drive).
-                                savePath = tbxScreenSavePath.Text + "\\" + DateTime.Now.ToString("yyyyMMdd");
+                                string savePath = tbxScreenSavePath.Text + "\\" + DateTime.Now.ToString("yyyyMMdd");
                                 Directory.CreateDirectory(savePath);
                                 screenSaveBitmap.Save(savePath + "\\" + DateTime.Now.ToString("yyyyMMdd_HHmmssff") + ".jpg", ImageFormat.Jpeg);
 
