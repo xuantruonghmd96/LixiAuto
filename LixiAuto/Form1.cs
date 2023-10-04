@@ -6,7 +6,7 @@ namespace LixiAuto
     public partial class Form1 : Form
     {
         int _lixiClickAddX = 130, _lixiClickAddY = 60, _lixiClickAddNext = -100, _count = 0;
-        int _padLeft = 1300, _padTop = 100;
+        int _padLeft = 1500, _padTop = 100;
         int hue = 7, saturation = 30, brightness = 40;
         public Form1()
         {
